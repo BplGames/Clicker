@@ -68,9 +68,7 @@
     function goFullScreen() {
       const el = document.documentElement;
       if (el.requestFullscreen) {
-        el.requestFullscreen().catch(() => {
-          // tu możesz pokazać komunikat, jeśli fullscreen odmówiony
-        });
+        el.requestFullscreen().catch(() => {});
       } else if (el.webkitRequestFullscreen) {
         el.webkitRequestFullscreen();
       } else if (el.msRequestFullscreen) {
