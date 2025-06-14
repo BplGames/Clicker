@@ -7,18 +7,28 @@
     html, body {
       margin: 0;
       padding: 0;
-      overflow: hidden;
       height: 100%;
+      overflow: hidden;
       background: black;
     }
-    iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
+
+    body {
+      background-image: url('zdjęcia/ekran.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      animation: shake 0.4s ease-in-out 3;
     }
+
+    @keyframes shake {
+      0% { transform: translate(0, 0); }
+      20% { transform: translate(-10px, 5px); }
+      40% { transform: translate(10px, -5px); }
+      60% { transform: translate(-8px, 8px); }
+      80% { transform: translate(8px, -8px); }
+      100% { transform: translate(0, 0); }
+    }
+
     #stopBtn {
       position: fixed;
       top: 20px;
@@ -37,10 +47,7 @@
 </head>
 <body>
 
-  <!-- Efekt rozbitego ekranu -->
-  <iframe src="https://www.whitescreen.online/broken-screen/"></iframe>
-
-  <!-- Dźwięk z folderu /audio/ -->
+  <!-- Dźwięk tłuczonego szkła -->
   <audio id="glassSound" autoplay>
     <source src="audio/glass.mp3" type="audio/mpeg">
     Twoja przeglądarka nie obsługuje audio.
@@ -65,10 +72,14 @@
     window.onload = () => {
       setTimeout(() => {
         goFullScreen();
+
         const sound = document.getElementById('glassSound');
         sound.play().catch(() => {
           document.body.addEventListener('click', () => sound.play(), { once: true });
         });
+
+        document.body.classList.add('shake');
+
       }, 500);
 
       setTimeout(() => {
