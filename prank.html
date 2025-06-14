@@ -17,7 +17,7 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      animation: shake 0.4s ease-in-out 3;
+      animation: shake 0.4s ease-in-out infinite;
     }
 
     @keyframes shake {
@@ -27,21 +27,6 @@
       60% { transform: translate(-8px, 8px); }
       80% { transform: translate(8px, -8px); }
       100% { transform: translate(0, 0); }
-    }
-
-    #stopBtn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 10px 15px;
-      font-size: 18px;
-      z-index: 999;
-      background: rgba(0,0,0,0.5);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      display: none;
     }
   </style>
 </head>
@@ -53,10 +38,8 @@
     Twoja przeglądarka nie obsługuje audio.
   </audio>
 
-  <!-- Przycisk STOP -->
-  <button id="stopBtn" onclick="endPrank()">✖️ Wyłącz prank</button>
-
   <script>
+    // Funkcja pełnoekranowa
     function goFullScreen() {
       const el = document.documentElement;
       if (el.requestFullscreen) el.requestFullscreen();
@@ -64,27 +47,30 @@
       else if (el.msRequestFullscreen) el.msRequestFullscreen();
     }
 
+    // Funkcja kończąca prank
     function endPrank() {
-      document.exitFullscreen?.();
-      history.back();
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      else if (document.msExitFullscreen) document.msExitFullscreen();
+
+      // Przejście do index.html
+      window.location.href = "index.html";
     }
 
     window.onload = () => {
+      // Od razu pełny ekran
+      goFullScreen();
+
+      // Odtwarzanie dźwięku
+      const sound = document.getElementById('glassSound');
+      sound.play().catch(() => {
+        document.body.addEventListener('click', () => sound.play(), { once: true });
+      });
+
+      // Po 5 sekundach zakończ prank
       setTimeout(() => {
-        goFullScreen();
-
-        const sound = document.getElementById('glassSound');
-        sound.play().catch(() => {
-          document.body.addEventListener('click', () => sound.play(), { once: true });
-        });
-
-        document.body.classList.add('shake');
-
-      }, 500);
-
-      setTimeout(() => {
-        document.getElementById('stopBtn').style.display = 'block';
-      }, 3000);
+        endPrank();
+      }, 5000);
     };
   </script>
 
