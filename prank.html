@@ -5,14 +5,12 @@
   <title>😱 Prank</title>
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
+      margin: 0; padding: 0;
+      height: 100%; width: 100%;
       overflow: hidden;
       background: black;
-      color: white;
       font-family: Arial, sans-serif;
+      color: white;
       user-select: none;
     }
 
@@ -25,6 +23,10 @@
       height: 100vh;
       width: 100vw;
       position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
 
     @keyframes shake {
@@ -36,84 +38,76 @@
       100% { transform: translate(0, 0); }
     }
 
+    #fullscreenBtn {
+      padding: 20px 40px;
+      font-size: 1.5em;
+      border: none;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.9);
+      color: black;
+      cursor: pointer;
+      box-shadow: 0 0 10px #fff;
+      user-select: none;
+      transition: background 0.3s;
+    }
+    #fullscreenBtn:hover {
+      background: white;
+    }
+
     #f11-message {
-      position: fixed;
-      bottom: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.7);
-      padding: 10px 20px;
-      border-radius: 8px;
+      margin-top: 20px;
       font-size: 1.2em;
-      display: none;
-      pointer-events: none;
-      z-index: 9999;
+      color: #eee;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
-  <audio id="glassSound" autoplay>
+  <audio id="glassSound" preload="auto">
     <source src="audio/glass.mp3" type="audio/mpeg" />
     Twoja przeglądarka nie obsługuje audio.
   </audio>
 
-  <div id="f11-message">Jeśli pełny ekran się nie włączył, wciśnij F11</div>
+  <button id="fullscreenBtn">Pełny ekran (F11)</button>
+  <div id="f11-message">Jeśli pełny ekran się nie włączy, możesz też wcisnąć F11</div>
 
   <script>
+    const btn = document.getElementById('fullscreenBtn');
+    const sound = document.getElementById('glassSound');
+
     function goFullScreen() {
       const el = document.documentElement;
       if (el.requestFullscreen) {
-        el.requestFullscreen().catch(() => {
-          showF11Message();
-        });
+        el.requestFullscreen();
       } else if (el.webkitRequestFullscreen) {
-        el.webkitRequestFullscreen().catch(() => {
-          showF11Message();
-        });
+        el.webkitRequestFullscreen();
       } else if (el.msRequestFullscreen) {
-        el.msRequestFullscreen().catch(() => {
-          showF11Message();
-        });
-      } else {
-        // Brak wsparcia fullscreen
-        showF11Message();
+        el.msRequestFullscreen();
       }
     }
 
-    function showF11Message() {
-      const msg = document.getElementById('f11-message');
-      msg.style.display = 'block';
-    }
-
-    function endPrank() {
-      if (document.exitFullscreen) document.exitFullscreen();
-      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-      else if (document.msExitFullscreen) document.msExitFullscreen();
-
-      window.location.href = "index.html";
-    }
-
-    window.onload = () => {
+    btn.addEventListener('click', () => {
       goFullScreen();
-
-      const sound = document.getElementById('glassSound');
       sound.play().catch(() => {
-        // jeśli autoplay zablokowany, odtwórz po kliknięciu
+        // jeśli autoplay zablokowany, odtwórz po kolejnym kliknięciu
         document.body.addEventListener('click', () => sound.play(), { once: true });
       });
 
       alert("rozwaliłeś ekran");
 
-      setTimeout(() => {
-        endPrank();
-      }, 5000);
-    };
+      // Ukryj przycisk po kliknięciu
+      btn.style.display = 'none';
 
-    // Dodatkowo obsługa błędu fullscreen (np. user anulował)
-    document.addEventListener('fullscreenerror', showF11Message);
-    document.addEventListener('webkitfullscreenerror', showF11Message);
-    document.addEventListener('msfullscreenerror', showF11Message);
+      // Po 5 sekundach zakończ prank i wyjdź z fullscreen
+      setTimeout(() => {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        else if (document.msExitFullscreen) document.msExitFullscreen();
+
+        window.location.href = "index.html";
+      }, 5000);
+    });
   </script>
 
 </body>
