@@ -46,22 +46,25 @@
 </head>
 <body>
 
-  <button id="startBtn">Kliknij aby rozpocząć Rozwalenie Monitora</button>
+  <button id="startBtn">Kliknij aby rozpocząć prank</button>
 
   <img id="prankImage" src="zdjęcia/ekran.jpg" alt="Rozwalony monitor" />
+
+  <audio id="glassSound" preload="auto">
+    <source src="audio/glass.mp3" type="audio/mpeg" />
+    Twoja przeglądarka nie obsługuje audio.
+  </audio>
 
   <script>
     const btn = document.getElementById('startBtn');
     const prankImage = document.getElementById('prankImage');
+    const sound = document.getElementById('glassSound');
 
     btn.addEventListener('click', () => {
-      // Ukryj przycisk
       btn.style.display = 'none';
-
-      // Pokaż obraz na pełnym ekranie
       prankImage.style.display = 'block';
 
-      // Opcjonalnie: przejdź w fullscreen (działa tylko po kliknięciu)
+      // Spróbuj przejść w fullscreen (działa tylko po kliknięciu)
       const el = document.documentElement;
       if (el.requestFullscreen) {
         el.requestFullscreen().catch(() => {});
@@ -70,6 +73,12 @@
       } else if (el.msRequestFullscreen) {
         el.msRequestFullscreen();
       }
+
+      // Odtwórz dźwięk
+      sound.play().catch(() => {
+        // Jeśli automatyczne odtwarzanie zablokowane, odtwórz po kolejnym kliknięciu
+        document.body.addEventListener('click', () => sound.play(), { once: true });
+      });
     });
   </script>
 
