@@ -65,26 +65,25 @@
     const btn = document.getElementById('fullscreenBtn');
     const sound = document.getElementById('glassSound');
 
-    function goFullScreen() {
+    btn.addEventListener('click', () => {
       const el = document.documentElement;
       if (el.requestFullscreen) {
-        el.requestFullscreen().catch(() => {});
+        el.requestFullscreen().catch((err) => {
+          console.warn("Fullscreen error:", err);
+          alert("Nie udało się przejść do pełnego ekranu: " + err.message);
+        });
       } else if (el.webkitRequestFullscreen) {
         el.webkitRequestFullscreen();
       } else if (el.msRequestFullscreen) {
         el.msRequestFullscreen();
       }
-    }
-
-    btn.addEventListener('click', () => {
-      goFullScreen();
 
       sound.play().catch(() => {
         document.body.addEventListener('click', () => sound.play(), { once: true });
       });
 
-      alert("rozwaliłeś ekran");
-
+      alert("Rozwaliłeś Ekran");
+      
       btn.style.display = 'none';
 
       setTimeout(() => {
