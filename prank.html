@@ -27,7 +27,7 @@
       flex-direction: column;
     }
 
-    #fullscreenBtn {
+    #startBtn {
       padding: 20px 40px;
       font-size: 1.5em;
       border: none;
@@ -39,15 +39,8 @@
       user-select: none;
       transition: background 0.3s;
     }
-    #fullscreenBtn:hover {
+    #startBtn:hover {
       background: white;
-    }
-
-    #f11-message {
-      margin-top: 20px;
-      font-size: 1.2em;
-      color: #eee;
-      text-align: center;
     }
   </style>
 </head>
@@ -58,19 +51,19 @@
     Twoja przeglądarka nie obsługuje audio.
   </audio>
 
-  <button id="fullscreenBtn">Pełny ekran (F11)</button>
-  <div id="f11-message">Jeśli pełny ekran się nie włączy, możesz też wcisnąć F11</div>
+  <button id="startBtn">Kliknij, aby rozpocząć Rozwalenie Monitora</button>
 
   <script>
-    const btn = document.getElementById('fullscreenBtn');
+    const btn = document.getElementById('startBtn');
     const sound = document.getElementById('glassSound');
 
     btn.addEventListener('click', () => {
       const el = document.documentElement;
+
+      // Próbujemy przejść w pełny ekran (tylko w wyniku kliknięcia działa)
       if (el.requestFullscreen) {
-        el.requestFullscreen().catch((err) => {
-          console.warn("Fullscreen error:", err);
-          alert("Nie udało się przejść do pełnego ekranu: " + err.message);
+        el.requestFullscreen().catch(() => {
+          // jeśli nie uda się fullscreen, nic nie robimy
         });
       } else if (el.webkitRequestFullscreen) {
         el.webkitRequestFullscreen();
@@ -78,14 +71,17 @@
         el.msRequestFullscreen();
       }
 
+      // Odtwarzamy dźwięk
       sound.play().catch(() => {
+        // jeśli odtwarzanie zablokowane, spróbuj po kolejnym kliknięciu
         document.body.addEventListener('click', () => sound.play(), { once: true });
       });
 
       alert("Rozwaliłeś Ekran");
-      
+
       btn.style.display = 'none';
 
+      // Po 5 sekundach wychodzimy z pełnego ekranu i wracamy na index.html
       setTimeout(() => {
         if (document.exitFullscreen) document.exitFullscreen();
         else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
