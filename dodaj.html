@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Dodaj własną liczbę</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #5f7dcf, #94a5e6);
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 100px;
+      color: white;
+    }
+    input {
+      padding: 15px;
+      font-size: 20px;
+      border-radius: 10px;
+      border: none;
+      width: 200px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    a {
+      display: block;
+      margin-top: 20px;
+      color: #fff;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dodaj liczbę ➕</h1>
+  <input type="number" id="customValue" placeholder="Wpisz liczbę" />
+  <br>
+  <button onclick="addCustom()">Dodaj</button>
+  <a href="index.html">⬅️ Wróć</a>
+
+  <script>
+    function addCustom() {
+      const value = parseInt(document.getElementById('customValue').value);
+      if (!isNaN(value)) {
+        let count = parseInt(localStorage.getItem("counter") || "0");
+        count += value;
+        localStorage.setItem("counter", count);
+        alert("Dodano " + value + "!");
+      } else {
+        alert("Wpisz poprawną liczbę!");
+      }
+    }
+  </script>
+</body>
+</html>
