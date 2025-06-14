@@ -11,7 +11,7 @@
       padding-top: 100px;
       color: white;
     }
-    input {
+    input, select {
       padding: 15px;
       font-size: 20px;
       border-radius: 10px;
@@ -35,27 +35,54 @@
       color: #fff;
       text-decoration: underline;
     }
+    #message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <h1>Dodaj liczbę ➕</h1>
+  <h1>➕➖ Dodaj lub Odejmij liczbę</h1>
+
   <input type="number" id="customValue" placeholder="Wpisz liczbę" />
   <br>
-  <button onclick="addCustom()">Dodaj</button>
+  <select id="mode">
+    <option value="add">Dodaj</option>
+    <option value="subtract">Odejmij</option>
+  </select>
+  <br>
+  <button onclick="applyCustom()">Zastosuj</button>
+  <div id="message"></div>
   <a href="index.html">⬅️ Wróć</a>
 
   <script>
-    function addCustom() {
+    function applyCustom() {
       const value = parseInt(document.getElementById('customValue').value);
+      const mode = document.getElementById('mode').value;
+      const message = document.getElementById('message');
+
       if (!isNaN(value)) {
         let count = parseInt(localStorage.getItem("counter") || "0");
-        count += value;
+        if (mode === "add") {
+          count += value;
+          message.innerText = `✅ Dodano ${value}!`;
+          message.style.color = "lightgreen";
+        } else {
+          count -= value;
+          message.innerText = `❌ Odjęto ${value}!`;
+          message.style.color = "#ff6666";
+        }
         localStorage.setItem("counter", count);
-        alert("Dodano " + value + "!");
+        setTimeout(() => message.innerText = "", 3000);
       } else {
         alert("Wpisz poprawną liczbę!");
       }
     }
+
+    // Enter = submit
+    document.getElementById("customValue").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") applyCustom();
+    });
   </script>
 </body>
 </html>
