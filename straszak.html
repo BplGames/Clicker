@@ -5,7 +5,10 @@
   <title>Straszak</title>
   <style>
     html, body {
-      margin: 0; padding: 0; height: 100vh; overflow: hidden;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
       background: black;
       display: flex;
       justify-content: center;
@@ -13,6 +16,7 @@
       position: relative;
       transition: background-color 0.2s;
     }
+
     #scaryImage {
       max-width: 90vw;
       max-height: 90vh;
@@ -28,47 +32,52 @@
 </head>
 <body>
 
-  <img id="scaryImage" src="zdjęcia/straszak.jpg" alt="Straszak" />
+  <img id="scaryImage" src="jumpscare/jps.jpg" alt="Straszak" />
 
   <audio id="screamSound" preload="auto">
     <source src="audio/krzyk.mp3" type="audio/mpeg" />
-    Twoja przeglądarka nie obsługuje audio.
   </audio>
 
   <script>
     const sound = document.getElementById('screamSound');
     const image = document.getElementById('scaryImage');
-    let flashInterval;
-    let flashCount = 0;
 
     function startFlashing() {
-      flashInterval = setInterval(() => {
-        document.body.style.backgroundColor = (document.body.style.backgroundColor === 'red') ? 'black' : 'red';
-        flashCount++;
-        if (flashCount >= 20) { // 20 razy mruga (ok 4 sekundy przy 200ms)
-          clearInterval(flashInterval);
+      let count = 0;
+      const interval = setInterval(() => {
+        document.body.style.backgroundColor =
+          document.body.style.backgroundColor === 'red' ? 'black' : 'red';
+        count++;
+        if (count >= 20) {
+          clearInterval(interval);
           document.body.style.backgroundColor = 'black';
         }
       }, 200);
     }
 
     sound.addEventListener('ended', () => {
-      // Po zakończeniu dźwięku pokaż obraz i zacznij mruganie
       image.style.display = 'block';
       startFlashing();
-
-      // Po 5 sekundach przekierowanie na index.html
       setTimeout(() => {
         window.location.href = 'index.html';
       }, 5000);
     });
 
     window.onload = () => {
-      sound.play().catch(() => {
-        // Jeśli autoplay zablokowane, zacznij na kliknięcie
-        document.body.addEventListener('click', () => sound.play(), {once: true});
-      });
+      document.body.addEventListener('click', () => {
+        sound.play();
+      }, { once: true });
     };
+
+    setTimeout(() => {
+      if (image.style.display === 'none') {
+        image.style.display = 'block';
+        startFlashing();
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 5000);
+      }
+    }, 1000);
   </script>
 
 </body>
