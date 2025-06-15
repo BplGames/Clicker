@@ -9,30 +9,15 @@
       padding: 0;
       height: 100vh;
       overflow: hidden;
-      background: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
+      background-color: black;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       transition: background-color 0.2s;
-    }
-
-    #scaryImage {
-      max-width: 90vw;
-      max-height: 90vh;
-      display: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-      user-select: none;
     }
   </style>
 </head>
 <body>
-
-  <img id="scaryImage" src="jumpscare/jps.jpg" alt="Straszak" />
 
   <audio id="screamSound" preload="auto">
     <source src="audio/krzyk.mp3" type="audio/mpeg" />
@@ -40,7 +25,6 @@
 
   <script>
     const sound = document.getElementById('screamSound');
-    const image = document.getElementById('scaryImage');
 
     function startFlashing() {
       let count = 0;
@@ -55,29 +39,30 @@
       }, 200);
     }
 
-    sound.addEventListener('ended', () => {
-      image.style.display = 'block';
-      startFlashing();
-      setTimeout(() => {
-        window.location.href = 'index.html';
-      }, 5000);
-    });
+    function triggerScare() {
+      // Uruchom dźwięk
+      sound.play().catch((err) => {
+        console.error('Nie udało się odtworzyć dźwięku:', err);
+      });
 
-    window.onload = () => {
-      document.body.addEventListener('click', () => {
-        sound.play();
-      }, { once: true });
-    };
-
-    setTimeout(() => {
-      if (image.style.display === 'none') {
-        image.style.display = 'block';
+      // Gdy dźwięk się zakończy — ustaw obraz i miganie
+      sound.addEventListener('ended', () => {
+        document.body.style.backgroundImage = "url('jumpscare/jps.jpg')";
         startFlashing();
+
+        // Po 5 sekundach przekieruj
         setTimeout(() => {
           window.location.href = 'index.html';
         }, 5000);
-      }
-    }, 1000);
+      });
+    }
+
+    // Automatyczny start po 1 sekundzie
+    window.onload = () => {
+      setTimeout(() => {
+        triggerScare();
+      }, 1000);
+    };
   </script>
 
 </body>
