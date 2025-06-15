@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>😱Rozbity Ekran</title>
+  <title>😱 Ekran</title>
   <style>
     html, body {
       margin: 0;
@@ -35,16 +35,7 @@
       background-image: url('zdjęcia/ekran.jpg');
       background-size: cover;
       background-position: center;
-      animation: shake 0.4s ease-in-out infinite;
-    }
-
-    @keyframes shake {
-      0% { transform: translate(0, 0); }
-      20% { transform: translate(-10px, 5px); }
-      40% { transform: translate(10px, -5px); }
-      60% { transform: translate(-8px, 8px); }
-      80% { transform: translate(8px, -8px); }
-      100% { transform: translate(0, 0); }
+      background-repeat: no-repeat;
     }
   </style>
 </head>
@@ -82,14 +73,13 @@
       prankScreen.style.display = 'block';
 
       await goFullScreen();
-
       sound.play();
 
-      // Po 10 sekundach wyłącz prank i wróć
+      // Po 5 sekundach zakończ prank
       setTimeout(() => {
         exitFullScreen();
         window.location.href = "index.html";
-      }, 10000);
+      }, 5000);
     });
   </script>
 
