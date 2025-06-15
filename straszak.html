@@ -1,57 +1,38 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <title>😱 Straszak z krwią, glitch i błyskami</title>
+  <meta charset="UTF-8" />
+  <title>😱 Straszak</title>
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       background: black;
       height: 100%;
       overflow: hidden;
       position: relative;
     }
 
-    #jumpscare {
+    #jumpscare, #bloodDrip, #bloodSplatter {
+      position: absolute;
+      top: 0; left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: none;
-      position: absolute;
-      top: 0;
-      left: 0;
       z-index: 1;
-    }
-
-    #bloodDrip {
-      display: none;
-      position: absolute;
-      top: -100%;
-      left: 0;
-      width: 100%;
-      height: auto;
-      z-index: 2;
-      animation: dripAnim 3s ease-in forwards;
       pointer-events: none;
     }
 
+    #bloodDrip {
+      top: -100%;
+      animation: dripAnim 3s ease-in forwards;
+      z-index: 2;
+    }
+
     @keyframes dripAnim {
-      0% {
-        top: -100%;
-        opacity: 0.3;
-        transform: scaleY(1);
-      }
-      50% {
-        top: 0%;
-        opacity: 0.7;
-        transform: scaleY(1.05);
-      }
-      100% {
-        top: 20%;
-        opacity: 1;
-        transform: scaleY(1.2);
-      }
+      0%   { top: -100%; opacity: 0.3; transform: scaleY(1); }
+      50%  { top: 0%;    opacity: 0.7; transform: scaleY(1.05); }
+      100% { top: 20%;   opacity: 1;   transform: scaleY(1.2); }
     }
 
     #glitch {
@@ -67,6 +48,7 @@
       );
       z-index: 3;
       animation: glitchEffect 0.3s steps(2, start) infinite;
+      pointer-events: none;
     }
 
     @keyframes glitchEffect {
@@ -88,6 +70,7 @@
       z-index: 4;
       opacity: 0;
       animation: flashAnim 0.15s ease-in-out 4;
+      pointer-events: none;
     }
 
     @keyframes flashAnim {
@@ -95,21 +78,48 @@
       50% { opacity: 1; }
       100% { opacity: 0; }
     }
+
+    /* Animacja rozbryzgu krwi */
+    #bloodSplatter {
+      animation: splatterAnim 2s forwards;
+      z-index: 5;
+    }
+
+    @keyframes splatterAnim {
+      0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(0deg);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.1) rotate(15deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
   </style>
 </head>
 <body>
 
-  <img id="jumpscare" src="zdjęcia/jumpscare.jpg" alt="BOO!">
-  <img id="bloodDrip" src="zdjęcia/blood-drip.png" alt="Spływająca krew">
+  <img id="jumpscare" src="zdjęcia/jumpscare.jpg" alt="BOO!" />
+  <img id="bloodDrip" src="zdjęcia/blood-drip.png" alt="Spływająca krew" />
+  <img id="bloodSplatter" src="zdjęcia/blood.png" alt="Rozbryzg krwi" />
   <div id="glitch"></div>
   <div id="flash"></div>
 
   <audio id="screamSound">
-    <source src="audio/krzyk.mp3" type="audio/mpeg">
+    <source src="audio/krzyk.mp3" type="audio/mpeg" />
   </audio>
 
   <audio id="dripSound">
-    <source src="audio/drip.mp3" type="audio/mpeg">
+    <source src="audio/drip.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- zamieniony trzask na strzał -->
+  <audio id="shootSound">
+    <source src="audio/shoot.mp3" type="audio/mpeg" />
   </audio>
 
   <script>
@@ -125,33 +135,40 @@
 
       setTimeout(() => {
         const jumpscare = document.getElementById('jumpscare');
-        const blood = document.getElementById('bloodDrip');
+        const bloodDrip = document.getElementById('bloodDrip');
+        const bloodSplatter = document.getElementById('bloodSplatter');
         const glitch = document.getElementById('glitch');
         const flash = document.getElementById('flash');
         const scream = document.getElementById('screamSound');
         const drip = document.getElementById('dripSound');
+        const shoot = document.getElementById('shootSound');
 
         jumpscare.style.display = 'block';
-        blood.style.display = 'block';
+        bloodDrip.style.display = 'block';
         glitch.style.display = 'block';
         flash.style.display = 'block';
 
         scream.play();
         drip.play();
 
-        // Wyłącz glitch po 5 sekundach
         setTimeout(() => {
           glitch.style.display = 'none';
         }, 5000);
 
-        // Przejście do index.html po 7 sekundach
+        scream.onended = () => {
+          shoot.play();
+        };
+
+        shoot.onended = () => {
+          bloodSplatter.style.display = 'block';
+        };
+
         setTimeout(() => {
           window.location.href = "index.html";
-        }, 7000);
+        }, 9000);
 
-      }, 1500); // Czas przed wyświetleniem jumpscare
+      }, 1500);
     });
   </script>
-
 </body>
 </html>
