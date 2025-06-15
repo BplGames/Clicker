@@ -34,15 +34,16 @@
     #prankScreen {
       display: none;
       position: absolute;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('zdjęcia/ekran.jpg'); /* ✅ TO JEST POPRAWNA LINIA */
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
       z-index: 1;
+    }
+
+    #prankImage {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     #exitBtn {
@@ -59,7 +60,10 @@
   <button id="startBtn">Rozbij Monitor</button>
   <button id="exitBtn" onclick="window.location.href='straszak.html'">❌ Wyjdź</button>
 
-  <div id="prankScreen"></div>
+  <!-- ⛔ zamiast tła – prawdziwy obraz -->
+  <div id="prankScreen">
+    <img id="prankImage" src="zdjęcia/ekran.jpg" alt="Rozbity ekran">
+  </div>
 
   <audio id="glassSound">
     <source src="audio/glass.mp3" type="audio/mpeg">
