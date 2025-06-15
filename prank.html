@@ -1,8 +1,9 @@
+<!-- prank.html -->
 <!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>😱 Ekran</title>
+  <title>😱Rozbity Ekran</title>
   <style>
     html, body {
       margin: 0;
@@ -41,13 +42,12 @@
 </head>
 <body>
 
-  <button id="startBtn">Rozbij Ekran</button>
+  <button id="startBtn">Rozbij Monitor</button>
 
   <div id="prankScreen"></div>
 
   <audio id="glassSound">
     <source src="audio/glass.mp3" type="audio/mpeg">
-    Twoja przeglądarka nie obsługuje audio.
   </audio>
 
   <script>
@@ -62,12 +62,6 @@
       else if (el.msRequestFullscreen) await el.msRequestFullscreen();
     }
 
-    function exitFullScreen() {
-      if (document.exitFullscreen) document.exitFullscreen();
-      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-      else if (document.msExitFullscreen) document.msExitFullscreen();
-    }
-
     startBtn.addEventListener('click', async () => {
       startBtn.style.display = 'none';
       prankScreen.style.display = 'block';
@@ -75,10 +69,9 @@
       await goFullScreen();
       sound.play();
 
-      // Po 5 sekundach zakończ prank
+      // Po 5 sek. przejdź do straszaka
       setTimeout(() => {
-        exitFullScreen();
-        window.location.href = "index.html";
+        window.location.href = "straszak.html";
       }, 5000);
     });
   </script>
