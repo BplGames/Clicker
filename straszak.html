@@ -6,9 +6,9 @@
   <style>
     html, body {
       margin: 0; padding: 0;
-      background: black;
       height: 100%;
       overflow: hidden;
+      background: black;
       position: relative;
     }
 
@@ -19,20 +19,19 @@
       height: 100%;
       object-fit: cover;
       display: none;
-      z-index: 1;
       pointer-events: none;
+      z-index: 1;
     }
 
     #bloodDrip {
-      top: -100%;
       animation: dripAnim 3s ease-in forwards;
       z-index: 2;
     }
 
     @keyframes dripAnim {
-      0%   { top: -100%; opacity: 0.3; transform: scaleY(1); }
-      50%  { top: 0%;    opacity: 0.7; transform: scaleY(1.05); }
-      100% { top: 20%;   opacity: 1;   transform: scaleY(1.2); }
+      0% { top: -100%; opacity: 0.3; transform: scaleY(1); }
+      50% { top: 0%; opacity: 0.7; transform: scaleY(1.05); }
+      100% { top: 20%; opacity: 1; transform: scaleY(1.2); }
     }
 
     #glitch {
@@ -52,11 +51,11 @@
     }
 
     @keyframes glitchEffect {
-      0%   { opacity: 0.3; transform: translate(0, 0); }
-      20%  { transform: translate(-5px, 5px); }
-      40%  { transform: translate(5px, -5px); }
-      60%  { transform: translate(-2px, 2px); }
-      80%  { transform: translate(2px, -2px); }
+      0% { opacity: 0.3; transform: translate(0, 0); }
+      20% { transform: translate(-5px, 5px); }
+      40% { transform: translate(5px, -5px); }
+      60% { transform: translate(-2px, 2px); }
+      80% { transform: translate(2px, -2px); }
       100% { opacity: 0.4; transform: translate(0, 0); }
     }
 
@@ -79,7 +78,6 @@
       100% { opacity: 0; }
     }
 
-    /* Animacja rozbryzgu krwi */
     #bloodSplatter {
       animation: splatterAnim 2s forwards;
       z-index: 5;
@@ -104,21 +102,21 @@
 <body>
 
   <img id="jumpscare" src="zdjęcia/jumpscare.jpg" alt="BOO!" />
-  <img id="bloodDrip" src="zdjęcia/blood-drip.png" alt="Spływająca krew" />
+  <img id="bloodDrip" src="zdjęcia/blood-drip.png" alt="Krew spływająca" />
   <img id="bloodSplatter" src="zdjęcia/blood.png" alt="Rozbryzg krwi" />
+
   <div id="glitch"></div>
   <div id="flash"></div>
 
-  <audio id="screamSound">
+  <audio id="screamSound" preload="auto">
     <source src="audio/krzyk.mp3" type="audio/mpeg" />
   </audio>
 
-  <audio id="dripSound">
+  <audio id="dripSound" preload="auto">
     <source src="audio/drip.mp3" type="audio/mpeg" />
   </audio>
 
-  <!-- zamieniony trzask na strzał -->
-  <audio id="shootSound">
+  <audio id="shootSound" preload="auto">
     <source src="audio/shoot.mp3" type="audio/mpeg" />
   </audio>
 
@@ -130,45 +128,35 @@
       else if (el.msRequestFullscreen) await el.msRequestFullscreen();
     }
 
-    document.addEventListener("DOMContentLoaded", async () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       await enterFullScreen();
 
-      setTimeout(() => {
-        const jumpscare = document.getElementById('jumpscare');
-        const bloodDrip = document.getElementById('bloodDrip');
-        const bloodSplatter = document.getElementById('bloodSplatter');
-        const glitch = document.getElementById('glitch');
-        const flash = document.getElementById('flash');
-        const scream = document.getElementById('screamSound');
-        const drip = document.getElementById('dripSound');
-        const shoot = document.getElementById('shootSound');
+      const jumpscare = document.getElementById('jumpscare');
+      const bloodDrip = document.getElementById('bloodDrip');
+      const bloodSplatter = document.getElementById('bloodSplatter');
+      const glitch = document.getElementById('glitch');
+      const flash = document.getElementById('flash');
+      const scream = document.getElementById('screamSound');
+      const drip = document.getElementById('dripSound');
+      const shoot = document.getElementById('shootSound');
 
-        jumpscare.style.display = 'block';
-        bloodDrip.style.display = 'block';
-        glitch.style.display = 'block';
-        flash.style.display = 'block';
+      jumpscare.style.display = 'block';
+      bloodDrip.style.display = 'block';
+      glitch.style.display = 'block';
+      flash.style.display = 'block';
 
-        scream.play();
-        drip.play();
+      scream.play();
+      drip.play();
 
-        setTimeout(() => {
-          glitch.style.display = 'none';
-        }, 5000);
+      setTimeout(() => glitch.style.display = 'none', 5000);
 
-        scream.onended = () => {
-          shoot.play();
-        };
+      scream.onended = () => shoot.play();
 
-        shoot.onended = () => {
-          bloodSplatter.style.display = 'block';
-        };
+      shoot.onended = () => bloodSplatter.style.display = 'block';
 
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 9000);
-
-      }, 1500);
+      setTimeout(() => window.location.href = "index.html", 9000);
     });
   </script>
+
 </body>
 </html>
