@@ -11,63 +11,61 @@
       justify-content: center;
       align-items: center;
       position: relative;
-      transition: background-color 0.1s;
+      transition: background-color 0.2s;
     }
-
-    #bloodSplatter {
-      position: fixed;
+    #scaryImage {
+      max-width: 90vw;
+      max-height: 90vh;
+      display: none;
+      position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      max-width: 90vw;
-      max-height: 90vh;
-      display: none; /* początkowo ukryte */
       z-index: 10;
-      pointer-events: none;
+      user-select: none;
     }
   </style>
 </head>
 <body>
 
-  <img id="bloodSplatter" src="zdjęcia/blood.png" alt="Blood splatter" />
+  <img id="scaryImage" src="zdjęcia/straszak.jpg" alt="Straszak" />
 
-  <audio id="shootSound" preload="auto">
-    <source src="audio/shoot.mp3" type="audio/mpeg" />
-    Twój przeglądarka nie wspiera audio.
+  <audio id="screamSound" preload="auto">
+    <source src="audio/krzyk.mp3" type="audio/mpeg" />
+    Twoja przeglądarka nie obsługuje audio.
   </audio>
 
   <script>
-    const blood = document.getElementById('bloodSplatter');
-    const sound = document.getElementById('shootSound');
+    const sound = document.getElementById('screamSound');
+    const image = document.getElementById('scaryImage');
     let flashInterval;
     let flashCount = 0;
 
-    // Funkcja mrugania czerwonym ekranem
     function startFlashing() {
       flashInterval = setInterval(() => {
         document.body.style.backgroundColor = (document.body.style.backgroundColor === 'red') ? 'black' : 'red';
         flashCount++;
-        if (flashCount >= 10) { // mrugaj 10 razy (ok 1 sekundy, bo interval 100ms)
+        if (flashCount >= 20) { // 20 razy mruga (ok 4 sekundy przy 200ms)
           clearInterval(flashInterval);
           document.body.style.backgroundColor = 'black';
-          // Po mruganiu przekieruj
-          setTimeout(() => {
-            window.location.href = 'index.html'; // lub 'prank.html' jeśli chcesz
-          }, 1000);
         }
-      }, 100);
+      }, 200);
     }
 
     sound.addEventListener('ended', () => {
-      // Po zakończeniu dźwięku pokazujemy obraz krwi i startujemy miganie
-      blood.style.display = 'block';
+      // Po zakończeniu dźwięku pokaż obraz i zacznij mruganie
+      image.style.display = 'block';
       startFlashing();
+
+      // Po 5 sekundach przekierowanie na index.html
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 5000);
     });
 
-    // Start dźwięku od razu po załadowaniu strony
     window.onload = () => {
-      sound.play().catch(e => {
-        // Jeśli auto play jest zablokowane, czekaj na kliknięcie by zacząć
+      sound.play().catch(() => {
+        // Jeśli autoplay zablokowane, zacznij na kliknięcie
         document.body.addEventListener('click', () => sound.play(), {once: true});
       });
     };
