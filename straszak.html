@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>👻Jumpscare!👻</title>
+  <title>👻 STRASZAK!</title>
   <style>
     html, body {
       margin: 0;
@@ -37,7 +37,6 @@
   </audio>
 
   <script>
-    // Funkcja do fullscreen
     async function goFullScreen() {
       const el = document.documentElement;
       if (el.requestFullscreen) await el.requestFullscreen();
@@ -45,14 +44,23 @@
       else if (el.msRequestFullscreen) await el.msRequestFullscreen();
     }
 
-    // Główna logika po załadowaniu strony
+    // Po załadowaniu
     window.addEventListener('load', async () => {
       await goFullScreen();
 
-      // Po 3 sekundach zamknij fullscreen i wróć do index.html
-      setTimeout(() => {
-        if (document.exitFullscreen) document.exitFullscreen();
-        window.location.href = "index.html";
+      // Po 3 sekundy: próbujemy wyjść z fullscreen i przejść do index.html
+      setTimeout(async () => {
+        try {
+          if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
+            if (document.exitFullscreen) await document.exitFullscreen();
+            else if (document.webkitExitFullscreen) await document.webkitExitFullscreen();
+            else if (document.msExitFullscreen) await document.msExitFullscreen();
+          }
+        } catch (e) {
+          console.warn("Błąd przy wyjściu z fullscreen:", e);
+        } finally {
+          window.location.href = "index.html";
+        }
       }, 3000);
     });
   </script>
