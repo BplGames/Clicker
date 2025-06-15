@@ -3,7 +3,7 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>😱Rozbity Ekran</title>
+  <title>😱 Rozbity Ekran</title>
   <style>
     html, body {
       margin: 0;
@@ -14,9 +14,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
 
-    #startBtn {
+    #startBtn, #exitBtn {
       font-size: 2rem;
       padding: 1rem 2rem;
       background: red;
@@ -25,6 +26,10 @@
       border-radius: 10px;
       cursor: pointer;
       z-index: 2;
+    }
+
+    #startBtn:hover, #exitBtn:hover {
+      background-color: darkred;
     }
 
     #prankScreen {
@@ -37,12 +42,22 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+      z-index: 1;
+    }
+
+    #exitBtn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: none;
+      z-index: 3;
     }
   </style>
 </head>
 <body>
 
   <button id="startBtn">Rozbij Monitor</button>
+  <button id="exitBtn" onclick="window.location.href='straszak.html'">❌ Wyjdź</button>
 
   <div id="prankScreen"></div>
 
@@ -54,6 +69,7 @@
     const startBtn = document.getElementById('startBtn');
     const prankScreen = document.getElementById('prankScreen');
     const sound = document.getElementById('glassSound');
+    const exitBtn = document.getElementById('exitBtn');
 
     async function goFullScreen() {
       const el = document.documentElement;
@@ -65,16 +81,10 @@
     startBtn.addEventListener('click', async () => {
       startBtn.style.display = 'none';
       prankScreen.style.display = 'block';
+      exitBtn.style.display = 'block';
 
       await goFullScreen();
       sound.play();
-    }
-
-    button:hover {
-      background-color: darkred;
-    }
-      <!-- Przycisk, który przechodzi do innej strony, np. straszak.html -->
-  <button onclick="window.location.href='straszak.html'">❌ Wyjdź</button>
     });
   </script>
 
