@@ -68,11 +68,13 @@
 
       await goFullScreen();
       sound.play();
+    }
 
-      // Po 5 sek. przejdź do straszaka
-      setTimeout(() => {
-        window.location.href = "straszak.html";
-      }, 5000);
+    button:hover {
+      background-color: darkred;
+    }
+      <!-- Przycisk, który przechodzi do innej strony, np. straszak.html -->
+  <button onclick="window.location.href='straszak.html'">❌ Wyjdź</button>
     });
   </script>
 
