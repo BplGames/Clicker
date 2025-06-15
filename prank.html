@@ -1,19 +1,15 @@
-<!-- prank.html -->
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>😱 Rozbity Ekran</title>
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
+      margin: 0; padding: 0; height: 100%; overflow: hidden;
       background: black;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       position: relative;
     }
 
@@ -25,7 +21,8 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      z-index: 2;
+      z-index: 10;
+      position: relative;
     }
 
     #startBtn:hover {
@@ -34,17 +31,15 @@
 
     #prankScreen {
       display: none;
-      position: absolute;
+      position: fixed;
       top: 0; left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('zdjęcia/ekran.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       z-index: 1;
-    }
-
-    #prankImage {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
     }
   </style>
 </head>
@@ -52,18 +47,16 @@
 
   <button id="startBtn">Rozbij Monitor</button>
 
-  <div id="prankScreen">
-    <img id="prankImage" src="zdjęcia/ekran.jpg" alt="Rozbity ekran">
-  </div>
+  <div id="prankScreen"></div>
 
-  <audio id="glassSound">
-    <source src="audio/glass.mp3" type="audio/mpeg">
+  <audio id="glassSound" preload="auto">
+    <source src="audio/glass.mp3" type="audio/mpeg" />
   </audio>
 
   <script>
     const startBtn = document.getElementById('startBtn');
     const prankScreen = document.getElementById('prankScreen');
-    const sound = document.getElementById('glassSound');
+    const glassSound = document.getElementById('glassSound');
 
     async function goFullScreen() {
       const el = document.documentElement;
@@ -77,9 +70,10 @@
       prankScreen.style.display = 'block';
 
       await goFullScreen();
-      sound.play();
 
-      // automatyczne przejście do straszak.html po 5 sekundach
+      glassSound.play();
+
+      // Po 5 sekundach przekieruj na straszak.html
       setTimeout(() => {
         window.location.href = 'straszak.html';
       }, 5000);
