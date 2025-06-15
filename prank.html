@@ -1,85 +1,76 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8" />
-  <title>Prank</title>
+  <meta charset="UTF-8">
+  <title>😱 Rozbity Ekran</title>
   <style>
     html, body {
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
       height: 100%;
-      width: 100%;
+      overflow: hidden;
       background: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      user-select: none;
     }
 
-    #startBtn {
-      padding: 20px 40px;
-      color: white;
-      background: black;
-      border: 2px solid gray;
-      border-radius: 10px;
-      font-size: 1.5em;
-      cursor: pointer;
-      transition: background 0.3s, color 0.3s;
+    body {
+      background-image: url('zdjęcia/ekran.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      animation: shake 0.4s ease-in-out infinite;
     }
 
-    #startBtn:hover {
-      background: #222;
-      color: #ddd;
-      border-color: #bbb;
-    }
-
-    #prankImage {
-      display: none;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      position: fixed;
-      top: 0; left: 0;
-      z-index: 9999;
+    @keyframes shake {
+      0% { transform: translate(0, 0); }
+      20% { transform: translate(-10px, 5px); }
+      40% { transform: translate(10px, -5px); }
+      60% { transform: translate(-8px, 8px); }
+      80% { transform: translate(8px, -8px); }
+      100% { transform: translate(0, 0); }
     }
   </style>
 </head>
 <body>
 
-  <button id="startBtn">Kliknij aby rozpocząć Rozwałke</button>
-
-  <img id="prankImage" src="zdjęcia/ekran.jpg" alt="Rozwalony monitor" />
-
-  <audio id="glassSound" preload="auto">
-    <source src="audio/glass.mp3" type="audio/mpeg" />
+  <!-- Dźwięk tłuczonego szkła -->
+  <audio id="glassSound" autoplay>
+    <source src="audio/glass.mp3" type="audio/mpeg">
     Twoja przeglądarka nie obsługuje audio.
   </audio>
 
   <script>
-    const btn = document.getElementById('startBtn');
-    const prankImage = document.getElementById('prankImage');
-    const sound = document.getElementById('glassSound');
-
-    btn.addEventListener('click', () => {
-      btn.style.display = 'none';
-      prankImage.style.display = 'block';
-
-      // Spróbuj przejść w fullscreen (działa tylko po kliknięciu)
+    // Uruchomienie pełnego ekranu
+    function goFullScreen() {
       const el = document.documentElement;
-      if (el.requestFullscreen) {
-        el.requestFullscreen().catch(() => {});
-      } else if (el.webkitRequestFullscreen) {
-        el.webkitRequestFullscreen();
-      } else if (el.msRequestFullscreen) {
-        el.msRequestFullscreen();
-      }
+      if (el.requestFullscreen) el.requestFullscreen();
+      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      else if (el.msRequestFullscreen) el.msRequestFullscreen();
+    }
 
-      // Odtwórz dźwięk
+    // Zakończenie pranka i przekierowanie
+    function endPrank() {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      else if (document.msExitFullscreen) document.msExitFullscreen();
+
+      // Przekierowanie do index.html
+      window.location.href = "index.html";
+    }
+
+    // Główne wykonanie po załadowaniu strony
+    window.onload = () => {
+      goFullScreen();
+
+      const sound = document.getElementById('glassSound');
       sound.play().catch(() => {
-        // Jeśli automatyczne odtwarzanie zablokowane, odtwórz po kolejnym kliknięciu
         document.body.addEventListener('click', () => sound.play(), { once: true });
       });
-    });
+
+      // Czas trwania pranka – 10 sekund
+      setTimeout(() => {
+        endPrank();
+      }, 10000);
+    };
   </script>
 
 </body>
