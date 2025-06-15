@@ -1,3 +1,4 @@
+<!-- prank.html -->
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -16,7 +17,7 @@
       position: relative;
     }
 
-    #startBtn, #exitBtn {
+    #startBtn {
       font-size: 2rem;
       padding: 1rem 2rem;
       background: red;
@@ -27,7 +28,7 @@
       z-index: 2;
     }
 
-    #startBtn:hover, #exitBtn:hover {
+    #startBtn:hover {
       background-color: darkred;
     }
 
@@ -45,22 +46,12 @@
       height: 100%;
       object-fit: cover;
     }
-
-    #exitBtn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      display: none;
-      z-index: 3;
-    }
   </style>
 </head>
 <body>
 
   <button id="startBtn">Rozbij Monitor</button>
-  <button id="exitBtn" onclick="window.location.href='straszak.html'">❌ Wyjdź</button>
 
-  <!-- ⛔ zamiast tła – prawdziwy obraz -->
   <div id="prankScreen">
     <img id="prankImage" src="zdjęcia/ekran.jpg" alt="Rozbity ekran">
   </div>
@@ -73,7 +64,6 @@
     const startBtn = document.getElementById('startBtn');
     const prankScreen = document.getElementById('prankScreen');
     const sound = document.getElementById('glassSound');
-    const exitBtn = document.getElementById('exitBtn');
 
     async function goFullScreen() {
       const el = document.documentElement;
@@ -85,10 +75,14 @@
     startBtn.addEventListener('click', async () => {
       startBtn.style.display = 'none';
       prankScreen.style.display = 'block';
-      exitBtn.style.display = 'block';
 
       await goFullScreen();
       sound.play();
+
+      // automatyczne przejście do straszak.html po 5 sekundach
+      setTimeout(() => {
+        window.location.href = 'straszak.html';
+      }, 5000);
     });
   </script>
 
