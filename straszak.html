@@ -1,0 +1,49 @@
+<!-- straszak.html -->
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>👻Jumpscare!👻</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: black;
+      overflow: hidden;
+    }
+
+    #scary {
+      width: 100vw;
+      height: 100vh;
+      background-image: url('zdjęcia/straszak.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      animation: flash 0.2s infinite alternate;
+    }
+
+    @keyframes flash {
+      from { filter: brightness(0.9); }
+      to { filter: brightness(1.3); }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="scary"></div>
+
+  <audio id="scream" autoplay>
+    <source src="audio/scream.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Po 3 sekundach zakończ prank
+    setTimeout(() => {
+      if (document.exitFullscreen) document.exitFullscreen();
+      window.location.href = "index.html";
+    }, 3000);
+  </script>
+
+</body>
+</html>
