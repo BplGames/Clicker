@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>😱 Rozbity Ekran</title>
+  <title>😱Rozbity Ekran</title>
   <style>
     html, body {
       margin: 0;
@@ -10,13 +10,31 @@
       height: 100%;
       overflow: hidden;
       background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    body {
+    #startBtn {
+      font-size: 2rem;
+      padding: 1rem 2rem;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    #prankScreen {
+      display: none;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
       background-image: url('zdjęcia/ekran.jpg');
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
       animation: shake 0.4s ease-in-out infinite;
     }
 
@@ -32,45 +50,47 @@
 </head>
 <body>
 
-  <!-- Dźwięk tłuczonego szkła -->
-  <audio id="glassSound" autoplay>
+  <button id="startBtn">Rozbij Ekran</button>
+
+  <div id="prankScreen"></div>
+
+  <audio id="glassSound">
     <source src="audio/glass.mp3" type="audio/mpeg">
     Twoja przeglądarka nie obsługuje audio.
   </audio>
 
   <script>
-    // Uruchomienie pełnego ekranu
-    function goFullScreen() {
+    const startBtn = document.getElementById('startBtn');
+    const prankScreen = document.getElementById('prankScreen');
+    const sound = document.getElementById('glassSound');
+
+    async function goFullScreen() {
       const el = document.documentElement;
-      if (el.requestFullscreen) el.requestFullscreen();
-      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-      else if (el.msRequestFullscreen) el.msRequestFullscreen();
+      if (el.requestFullscreen) await el.requestFullscreen();
+      else if (el.webkitRequestFullscreen) await el.webkitRequestFullscreen();
+      else if (el.msRequestFullscreen) await el.msRequestFullscreen();
     }
 
-    // Zakończenie pranka i przekierowanie
-    function endPrank() {
+    function exitFullScreen() {
       if (document.exitFullscreen) document.exitFullscreen();
       else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
       else if (document.msExitFullscreen) document.msExitFullscreen();
-
-      // Przekierowanie do index.html
-      window.location.href = "index.html";
     }
 
-    // Główne wykonanie po załadowaniu strony
-    window.onload = () => {
-      goFullScreen();
+    startBtn.addEventListener('click', async () => {
+      startBtn.style.display = 'none';
+      prankScreen.style.display = 'block';
 
-      const sound = document.getElementById('glassSound');
-      sound.play().catch(() => {
-        document.body.addEventListener('click', () => sound.play(), { once: true });
-      });
+      await goFullScreen();
 
-      // Czas trwania pranka – 10 sekund
+      sound.play();
+
+      // Po 10 sekundach wyłącz prank i wróć
       setTimeout(() => {
-        endPrank();
+        exitFullScreen();
+        window.location.href = "index.html";
       }, 10000);
-    };
+    });
   </script>
 
 </body>
