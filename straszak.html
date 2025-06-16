@@ -40,37 +40,24 @@
     }
 
     function triggerScare() {
-      // Odtwarzaj dźwięk
       sound.play().catch((err) => {
         console.error('Nie udało się odtworzyć dźwięku:', err);
       });
 
-      // Po zakończeniu dźwięku pokaż obraz i rozpocznij miganie
       sound.addEventListener('ended', () => {
         document.body.style.backgroundImage = "url('jumpscare/jps.jpg')";
         startFlashing();
 
-        // Po 5 sekundach wróć do index.html
         setTimeout(() => {
           window.location.href = 'index.html';
         }, 5000);
-      }, { once: true }); // ważne: event listener wykona się tylko raz
+      }, { once: true });
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const enterPressed = urlParams.get('enter') === 'true';
-
-    if (enterPressed) {
-      // Jeśli jest parametr, odpal od razu
+    // Uruchom straszak natychmiast po załadowaniu strony
+    window.addEventListener('load', () => {
       triggerScare();
-    } else {
-      // Jeśli nie ma parametru, czekaj na Enter
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          triggerScare();
-        }
-      });
-    }
+    });
   </script>
 
 </body>
