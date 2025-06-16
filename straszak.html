@@ -5,19 +5,28 @@
   <title>Straszak</title>
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      overflow: hidden;
+      margin: 0; padding: 0; height: 100vh; overflow: hidden;
       background-color: black;
+      transition: background-color 0.2s;
+      position: relative;
+    }
+
+    #jumpscareImage {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      transition: background-color 0.2s;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 10;
     }
   </style>
 </head>
 <body>
+
+  <div id="jumpscareImage"></div>
 
   <audio id="screamSound" preload="auto">
     <source src="audio/krzyk.mp3" type="audio/mpeg" />
@@ -25,6 +34,7 @@
 
   <script>
     const sound = document.getElementById('screamSound');
+    const jumpscareDiv = document.getElementById('jumpscareImage');
 
     function startFlashing() {
       let count = 0;
@@ -45,7 +55,10 @@
       });
 
       sound.addEventListener('ended', () => {
-        document.body.style.backgroundImage = "url('jumpscare/jps.jpg')";
+        // Pokaż obraz jumpscare
+        jumpscareDiv.style.backgroundImage = "url('jumpscare/jps.jpg')";
+        jumpscareDiv.style.opacity = '1';
+
         startFlashing();
 
         setTimeout(() => {
