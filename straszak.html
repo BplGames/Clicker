@@ -40,24 +40,20 @@
     }
 
     function triggerScare() {
-      // Odtwarzaj dźwięk
-      sound.play().catch((err) => {
+      sound.play().catch(err => {
         console.error('Nie udało się odtworzyć dźwięku:', err);
       });
 
-      // Po zakończeniu dźwięku pokaż obraz i rozpocznij miganie
       sound.addEventListener('ended', () => {
         document.body.style.backgroundImage = "url('jumpscare/jps.jpg')";
         startFlashing();
 
-        // Po 5 sekundach wróć do index.html
         setTimeout(() => {
           window.location.href = 'index.html';
         }, 5000);
       }, { once: true });
     }
 
-    // Odpal straszak natychmiast po załadowaniu strony
     window.onload = () => {
       triggerScare();
     };
