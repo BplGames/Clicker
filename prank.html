@@ -35,14 +35,21 @@
 
     #infoText {
       display: none;
-      font-size: 3rem;          /* większa czcionka */
-      font-weight: 700;         /* pogrubienie */
-      color: #ff4444;           /* intensywny czerwony */
+      font-size: 3rem;
+      font-weight: 700;
+      color: #ff4444;
       text-align: center;
-      text-shadow: 2px 2px 6px black; /* lekki cień dla kontrastu */
+      text-shadow: 2px 2px 6px black;
       position: relative;
       z-index: 10;
       animation: pulse 2s infinite;
+
+      /* Dodane obramowanie i tło */
+      border: 3px solid #ff4444;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 0.5em 1em;
+      border-radius: 12px;
+      user-select: none;
     }
 
     @keyframes pulse {
@@ -100,8 +107,11 @@
         console.warn("Błąd odtwarzania dźwięku:", err);
       }
 
-      infoText.style.display = 'block';
-      gotPranked = true;
+      // Pokaż infoText po 3 sekundach
+      setTimeout(() => {
+        infoText.style.display = 'block';
+        gotPranked = true;
+      }, 3000);
     }
 
     startBtn.addEventListener('click', startPrank);
