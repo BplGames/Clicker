@@ -8,12 +8,10 @@
       margin: 0; padding: 0; height: 100%; overflow: hidden;
       background: black;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       position: relative;
       font-family: sans-serif;
-      color: white;
     }
 
     #startBtn {
@@ -26,7 +24,7 @@
       cursor: pointer;
       z-index: 10;
       position: relative;
-      margin-bottom: 20px;
+      transition: background-color 0.3s;
     }
 
     #startBtn:hover {
@@ -35,26 +33,18 @@
 
     #infoText {
       display: none;
-      font-size: 3rem;
-      font-weight: 700;
-      color: #ff4444;
+      font-size: 2rem;
+      color: white;
       text-align: center;
-      text-shadow: 2px 2px 6px black;
-      position: relative;
       z-index: 10;
-      animation: pulse 2s infinite;
-
-      /* Dodane obramowanie i tło */
-      border: 3px solid #ff4444;
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 0.5em 1em;
-      border-radius: 12px;
+      position: relative;
+      padding: 1rem 2rem;
+      border: 3px solid white;
+      background-color: rgba(0,0,0,0.7);
+      border-radius: 10px;
       user-select: none;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
+      pointer-events: none;
+      margin-top: 20px;
     }
 
     #prankScreen {
@@ -69,12 +59,21 @@
       background-repeat: no-repeat;
       z-index: 1;
     }
+
+    #container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
 
-  <button id="startBtn">Rozbij ekran</button>
-  <div id="infoText">Kliknij ENTER, aby zobaczyć niespodziankę 😈</div>
+  <div id="container">
+    <button id="startBtn">Rozbij ekran</button>
+    <div id="infoText">Wciśnij ENTER, aby zobaczyć niespodziankę 😈</div>
+  </div>
+  
   <div id="prankScreen"></div>
 
   <audio id="glassSound" preload="auto">
@@ -107,18 +106,20 @@
         console.warn("Błąd odtwarzania dźwięku:", err);
       }
 
-      // Pokaż infoText po 3 sekundach
+      // Pokaż info po 3 sekundach
       setTimeout(() => {
         infoText.style.display = 'block';
-        gotPranked = true;
       }, 3000);
+
+      gotPranked = true;
     }
 
     startBtn.addEventListener('click', startPrank);
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Enter' && gotPranked) {
-        window.location.href = 'straszak.html?enter=true';
+        // Przekieruj do straszak.html bez parametrów (możesz dodać ?enter=true jeśli chcesz)
+        window.location.href = 'straszak.html';
       }
     });
   </script>
