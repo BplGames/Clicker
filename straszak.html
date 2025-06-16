@@ -5,43 +5,32 @@
   <title>Straszak</title>
   <style>
     html, body {
-      margin: 0; padding: 0; height: 100vh; overflow: hidden;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
       background-color: black;
-      transition: background-color 0.2s;
-      position: relative;
-      font-family: sans-serif;
-    }
-
-    #jumpscareImage {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 9999;
+      transition: background-color 0.2s;
     }
   </style>
 </head>
 <body>
 
-  <div id="jumpscareImage"></div>
-
   <audio id="screamSound" preload="auto">
     <source src="audio/krzyk.mp3" type="audio/mpeg" />
-    Twój przeglądarka nie wspiera elementu audio.
   </audio>
 
   <script>
-    const screamSound = document.getElementById('screamSound');
-    const jumpscareImage = document.getElementById('jumpscareImage');
+    const sound = document.getElementById('screamSound');
 
     function startFlashing() {
       let count = 0;
       const interval = setInterval(() => {
-        document.body.style.backgroundColor = (document.body.style.backgroundColor === 'red') ? 'black' : 'red';
+        document.body.style.backgroundColor =
+          document.body.style.backgroundColor === 'red' ? 'black' : 'red';
         count++;
         if (count >= 20) {
           clearInterval(interval);
@@ -51,26 +40,41 @@
     }
 
     function triggerScare() {
-      // Ustaw obraz jumpscare i pokaż go
-      jumpscareImage.style.backgroundImage = "url('jumpscare/jps.jpg')";
-      jumpscareImage.style.opacity = '1';
-
-      // Odtwórz dźwięk
-      screamSound.play().catch((err) => {
-        console.error('Błąd odtwarzania dźwięku:', err);
+      // Odtwarzaj dźwięk
+      sound.play().catch((err) => {
+        console.error('Nie udało się odtworzyć dźwięku:', err);
       });
 
-      // Po zakończeniu dźwięku uruchom miganie i przekieruj
-      screamSound.addEventListener('ended', () => {
+      // Po zakończeniu dźwięku pokaż obraz i rozpocznij miganie
+      sound.addEventListener('ended', () => {
+        document.body.style.backgroundImage = "url('jumpscare/jps.jpg')";
         startFlashing();
 
+        // Po 3 sekundach pokaż komunikat
+        setTimeout(() => {
+          const msg = document.createElement('div');
+          msg.textContent = "Zostałeś zjumpscare'owany";
+          msg.style.position = 'fixed';
+          msg.style.top = '50%';
+          msg.style.left = '50%';
+          msg.style.transform = 'translate(-50%, -50%)';
+          msg.style.color = 'white';
+          msg.style.fontSize = '3rem';
+          msg.style.fontWeight = 'bold';
+          msg.style.backgroundColor = 'rgba(0,0,0,0.7)';
+          msg.style.padding = '20px 40px';
+          msg.style.borderRadius = '15px';
+          msg.style.zIndex = '1000';
+          document.body.appendChild(msg);
+        }, 3000);
+
+        // Po 4 sekundach przekieruj do index.html
         setTimeout(() => {
           window.location.href = 'index.html';
-        }, 5000);
-      }, { once: true });
+        }, 4000);
+      }, { once: true }); // event listener wykona się tylko raz
     }
 
-    // Uruchom automatycznie po załadowaniu strony
     window.onload = () => {
       triggerScare();
     };
