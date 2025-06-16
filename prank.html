@@ -11,6 +11,7 @@
       justify-content: center;
       align-items: center;
       position: relative;
+      font-family: sans-serif;
     }
 
     #startBtn {
@@ -29,6 +30,15 @@
       background-color: darkred;
     }
 
+    #infoText {
+      display: none;
+      font-size: 2rem;
+      color: red;
+      text-align: center;
+      z-index: 10;
+      position: relative;
+    }
+
     #prankScreen {
       display: none;
       position: fixed;
@@ -45,8 +55,8 @@
 </head>
 <body>
 
-  <button id="startBtn">Rozbij Monitor</button>
-
+  <button id="startBtn">Rozbij ekran</button>
+  <div id="infoText">Wciśnij ENTER, aby zobaczyć niespodziankę 😈</div>
   <div id="prankScreen"></div>
 
   <audio id="glassSound" preload="auto">
@@ -57,6 +67,9 @@
     const startBtn = document.getElementById('startBtn');
     const prankScreen = document.getElementById('prankScreen');
     const glassSound = document.getElementById('glassSound');
+    const infoText = document.getElementById('infoText');
+
+    let gotPranked = false;
 
     async function goFullScreen() {
       const el = document.documentElement;
@@ -65,18 +78,27 @@
       else if (el.msRequestFullscreen) await el.msRequestFullscreen();
     }
 
-    startBtn.addEventListener('click', async () => {
+    async function startPrank() {
       startBtn.style.display = 'none';
       prankScreen.style.display = 'block';
-
       await goFullScreen();
 
-      glassSound.play();
+      try {
+        await glassSound.play();
+      } catch (err) {
+        console.warn("Błąd odtwarzania dźwięku:", err);
+      }
 
-      // Po 5 sekundach przekieruj na straszak.html
-      setTimeout(() => {
+      infoText.style.display = 'block';
+      gotPranked = true;
+    }
+
+    startBtn.addEventListener('click', startPrank);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && gotPranked) {
         window.location.href = 'straszak.html';
-      }, 5000);
+      }
     });
   </script>
 
