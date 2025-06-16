@@ -40,6 +40,23 @@
       }, 200);
     }
 
+    function showScareMessage() {
+      const msg = document.createElement('div');
+      msg.textContent = "Zostałeś zjumpscare'owany";
+      msg.style.position = 'fixed';
+      msg.style.top = '50%';
+      msg.style.left = '50%';
+      msg.style.transform = 'translate(-50%, -50%)';
+      msg.style.color = 'white';
+      msg.style.fontSize = '3rem';
+      msg.style.fontWeight = 'bold';
+      msg.style.backgroundColor = 'rgba(0,0,0,0.7)';
+      msg.style.padding = '20px 40px';
+      msg.style.borderRadius = '15px';
+      msg.style.zIndex = '1000';
+      document.body.appendChild(msg);
+    }
+
     function triggerScare() {
       // Ustaw tło od razu przy starcie odtwarzania
       document.body.style.backgroundImage = "url('jumpscare/jps.jpg')";
@@ -52,31 +69,20 @@
         console.error('Nie udało się odtworzyć dźwięku:', err);
       });
 
-      // Po zakończeniu dźwięku rozpocznij miganie i pokaz komunikatu oraz przekierowanie
+      // Po zakończeniu dźwięku rozpocznij miganie
       sound.addEventListener('ended', () => {
         startFlashing();
-
-        setTimeout(() => {
-          const msg = document.createElement('div');
-          msg.textContent = "Zostałeś zjumpscare'owany";
-          msg.style.position = 'fixed';
-          msg.style.top = '50%';
-          msg.style.left = '50%';
-          msg.style.transform = 'translate(-50%, -50%)';
-          msg.style.color = 'white';
-          msg.style.fontSize = '3rem';
-          msg.style.fontWeight = 'bold';
-          msg.style.backgroundColor = 'rgba(0,0,0,0.7)';
-          msg.style.padding = '20px 40px';
-          msg.style.borderRadius = '15px';
-          msg.style.zIndex = '1000';
-          document.body.appendChild(msg);
-        }, 3000);
-
-        setTimeout(() => {
-          window.location.href = 'index.html';
-        }, 4000);
       }, { once: true });
+
+      // Po 2 sekundach pokaż komunikat
+      setTimeout(() => {
+        showScareMessage();
+      }, 2000);
+
+      // Po 5 sekundach (2s + 3s) przekieruj do index.html
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 5000);
     }
 
     window.onload = () => {
