@@ -14,6 +14,7 @@
       background-position: center;
       background-repeat: no-repeat;
       transition: background-color 0.2s;
+      font-family: Arial, sans-serif;
     }
   </style>
 </head>
@@ -30,27 +31,31 @@
       let count = 0;
       const interval = setInterval(() => {
         document.body.style.backgroundColor =
-          document.body.style.backgroundColor === 'red' ? 'black' : 'red';
+          document.body.style.backgroundColor === 'rgba(255,0,0,0.5)' ? 'transparent' : 'rgba(255,0,0,0.5)';
         count++;
         if (count >= 20) {
           clearInterval(interval);
-          document.body.style.backgroundColor = 'black';
+          document.body.style.backgroundColor = 'transparent';
         }
       }, 200);
     }
 
     function triggerScare() {
+      // Ustaw tło od razu przy starcie odtwarzania
+      document.body.style.backgroundImage = "url('jumpscare/jps.jpg')";
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+      document.body.style.backgroundRepeat = 'no-repeat';
+
       // Odtwarzaj dźwięk
       sound.play().catch((err) => {
         console.error('Nie udało się odtworzyć dźwięku:', err);
       });
 
-      // Po zakończeniu dźwięku pokaż obraz i rozpocznij miganie
+      // Po zakończeniu dźwięku rozpocznij miganie i pokaz komunikatu oraz przekierowanie
       sound.addEventListener('ended', () => {
-        document.body.style.backgroundImage = "url('jumpscare/jps.jpg')";
         startFlashing();
 
-        // Po 3 sekundach pokaż komunikat
         setTimeout(() => {
           const msg = document.createElement('div');
           msg.textContent = "Zostałeś zjumpscare'owany";
@@ -68,11 +73,10 @@
           document.body.appendChild(msg);
         }, 3000);
 
-        // Po 4 sekundach przekieruj do index.html
         setTimeout(() => {
           window.location.href = 'index.html';
         }, 4000);
-      }, { once: true }); // event listener wykona się tylko raz
+      }, { once: true });
     }
 
     window.onload = () => {
