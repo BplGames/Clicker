@@ -9,6 +9,7 @@
       background-color: black;
       transition: background-color 0.2s;
       position: relative;
+      font-family: sans-serif;
     }
 
     #jumpscareImage {
@@ -20,7 +21,7 @@
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.3s ease;
-      z-index: 10;
+      z-index: 9999;
     }
   </style>
 </head>
@@ -30,17 +31,17 @@
 
   <audio id="screamSound" preload="auto">
     <source src="audio/krzyk.mp3" type="audio/mpeg" />
+    Twój przeglądarka nie wspiera elementu audio.
   </audio>
 
   <script>
-    const sound = document.getElementById('screamSound');
-    const jumpscareDiv = document.getElementById('jumpscareImage');
+    const screamSound = document.getElementById('screamSound');
+    const jumpscareImage = document.getElementById('jumpscareImage');
 
     function startFlashing() {
       let count = 0;
       const interval = setInterval(() => {
-        document.body.style.backgroundColor =
-          document.body.style.backgroundColor === 'red' ? 'black' : 'red';
+        document.body.style.backgroundColor = (document.body.style.backgroundColor === 'red') ? 'black' : 'red';
         count++;
         if (count >= 20) {
           clearInterval(interval);
@@ -50,15 +51,17 @@
     }
 
     function triggerScare() {
-      sound.play().catch(err => {
-        console.error('Nie udało się odtworzyć dźwięku:', err);
+      // Ustaw obraz jumpscare i pokaż go
+      jumpscareImage.style.backgroundImage = "url('jumpscare/jps.jpg')";
+      jumpscareImage.style.opacity = '1';
+
+      // Odtwórz dźwięk
+      screamSound.play().catch((err) => {
+        console.error('Błąd odtwarzania dźwięku:', err);
       });
 
-      sound.addEventListener('ended', () => {
-        // Pokaż obraz jumpscare
-        jumpscareDiv.style.backgroundImage = "url('jumpscare/jps.jpg')";
-        jumpscareDiv.style.opacity = '1';
-
+      // Po zakończeniu dźwięku uruchom miganie i przekieruj
+      screamSound.addEventListener('ended', () => {
         startFlashing();
 
         setTimeout(() => {
@@ -67,6 +70,7 @@
       }, { once: true });
     }
 
+    // Uruchom automatycznie po załadowaniu strony
     window.onload = () => {
       triggerScare();
     };
