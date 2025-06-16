@@ -45,7 +45,7 @@
         console.error('Nie udało się odtworzyć dźwięku:', err);
       });
 
-      // Gdy dźwięk się zakończy — ustaw obraz i miganie
+      // Po zakończeniu dźwięku
       sound.addEventListener('ended', () => {
         document.body.style.backgroundImage = "url('jumpscare/jps.jpg')";
         startFlashing();
@@ -57,12 +57,13 @@
       });
     }
 
-    // Automatyczny start po 1 sekundzie
-    window.onload = () => {
-      setTimeout(() => {
-        triggerScare();
-      }, 1000);
-    };
+    // Sprawdź, czy w URL jest ?enter=true
+    const urlParams = new URLSearchParams(window.location.search);
+    const enterPressed = urlParams.get('enter') === 'true';
+
+    if (enterPressed) {
+      triggerScare();
+    }
   </script>
 
 </body>
