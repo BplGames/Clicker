@@ -54,10 +54,8 @@
       }, { once: true });
     }
 
-    // Uruchom straszak natychmiast po załadowaniu strony
-    window.addEventListener('load', () => {
-      triggerScare();
-    });
+    // Odpal straszak od razu po załadowaniu strony
+    window.onload = triggerScare;
   </script>
 
 </body>
